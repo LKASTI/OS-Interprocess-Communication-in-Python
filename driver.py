@@ -8,33 +8,47 @@ if not logfile:
 
 logger = Popen(['python', 'logger.py', logfile], stdin = PIPE, stdout = PIPE, encoding='utf8')
 
-menu_text = "|------------------------Menu------------------------|\n    password - sets the password key for encrypting/decrypting\n    encrypt - encrypts a given string\n    decrypt - decrypts a given string\n     history - shows history of encrypted/decrypted strings\n quit - ends the program\n\n|----------------------------------------------------|"
+menu_text = "------------------------------------------------Menu------------------------------------------------\n\n    password - sets the password key for encrypting/decrypting\n    encrypt - encrypts a given string\n    decrypt - decrypts a given string\n    history - shows history of encrypted/decrypted strings\n    quit - ends the program\n\n----------------------------------------------------------------------------------------------------"
 
 line = ""
 current_pass = ""
 
-while line != "quit":
+while True:
     sys.stdout.write(menu_text)
-    sys.stdout.write("Enter a command and argument: ")
+    sys.stdout.write("\nEnter a command: ")
 
+    # waiting for user to write to terminal
     line = sys.stdin.readline().rstrip()
-    cmd = line[:line.index(' ')]
-    arg = line[line.index(' ') + 1:]
-
     sys.stdout.write("\n")
 
-    if cmd == "password":
-        logger.stdin.write(f"SET_PASSWORD {arg}")
-    elif cmd == "encrypt":
-        # TODO: password must be set first
-        logger.stdin.write(f"ENCRYPT {arg}")
-        # TODO: save encrypted word in history if not already there
-    elif cmd == "decrypt":
-        logger.stdin.write(f"ENCRYPT {arg}")
-    elif cmd == "history":
-    elif cmd == "quit":
+    if line.find(' ') == -1:
+        if line == "quit":
+            logger.stdin.write("QUIT")
+            sys.exit(0)
+        elif line == "history":
+            logger.stdin.write("HISTORY SUCCESS")
+        else:
+            sys.stdout.write("Please enter one of the listed commands.")    
     else:
-        sys.stdout.write("Please enter one of the listed commands.")
+        cmd = line[:line.index(' ')]
+        arg = line[line.index(' ') + 1:]
+
+        if cmd == "password":
+            # set current password to argument
+            logger.stdin.write(f"SET_PASSWORD {arg}")
+        elif cmd == "encrypt":
+            # TODO: password must be set first
+            logger.stdin.write(f"ENCRYPT {arg}")
+            # TODO: save the string that will be encrypted into history
+        elif cmd == "decrypt":
+            logger.stdin.write(f"DECRYPT {arg}")
+            # TODO: save the string that will be decrypted into history
+        else:
+            sys.stdout.write("Please enter one of the listed commands.")    
+
+    sys.stdout.write("\n")
+    logger.stdin.flush()
+
 
 
     
