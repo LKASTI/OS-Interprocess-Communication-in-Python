@@ -23,10 +23,10 @@ while True:
 
     if line.find(' ') == -1:
         if line == "quit":
-            logger.stdin.write("QUIT")
+            logger.stdin.write("QUIT\n")
             sys.exit(0)
         elif line == "history":
-            logger.stdin.write("HISTORY SUCCESS")
+            logger.stdin.write("HISTORY SUCCESS\n")
         else:
             sys.stdout.write("Please enter one of the listed commands.")    
     else:
@@ -35,7 +35,7 @@ while True:
 
         if cmd == "password":
             # set current password to argument
-            logger.stdin.write(f"SET_PASSWORD {arg}")
+            logger.stdin.write(f"SET_PASSWORD {arg}\n")
         elif cmd == "encrypt":
             # TODO: password must be set first
             logger.stdin.write(f"ENCRYPT {arg}")
