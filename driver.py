@@ -47,6 +47,7 @@ while True:
             sys.stdout.write("Please enter one of the listed commands.")    
 
     sys.stdout.write("\n")
+    sys.stdin.flush()
     logger.stdin.flush()
 
 

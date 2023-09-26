@@ -15,7 +15,7 @@ log_file.write(format_action_message("START", "Logging Started"))
 
 while True:
     line = sys.stdin.readline().rstrip()
-
+    
     if line == "QUIT":
         log_file.write(format_action_message("STOPPED", "Logging Stopped"))
         log_file.close()
