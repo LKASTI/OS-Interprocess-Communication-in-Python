@@ -16,13 +16,13 @@ log_file.write(format_action_message("START", "Logging Started"))
 while True:
     line = sys.stdin.readline().rstrip()
 
-    if line == "QUIT":
-        log_file.write(format_action_message("STOPPED", "Logging Stopped"))
-        log_file.close()
-        sys.exit(0)
-    
     action = line[:line.index(' ')]
     message = line[line.index(' ') + 1:]
 
     log_file.write(format_action_message(action, message))
+    
+    if action == "STOPPED":
+        log_file.close()
+        sys.exit(0)
+
 
