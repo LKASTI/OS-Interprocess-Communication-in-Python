@@ -1,7 +1,34 @@
 import sys
 
+
 line = ""
-curr_pass = ""
+passkey = ""
+
+def encrypt(word):
+    encrypted = []
+    for i in range(0, len(word)):
+        ascii_val = ord(word[i]) + (ord(passkey[i].lower()) - ord('a'))
+
+        if ascii_val > 122:
+            diff = ascii_val - 122
+            ascii_val = diff + 96
+
+        encrypted.append(chr(ascii_val))
+
+    return "".join(encrypted)
+
+def decrypt(word):
+    decrypted = []
+    for i in range(0, len(word)):
+        ascii_val = ord(word[i]) - (ord(passkey[i].lower()) - ord('a'))
+
+        if ascii_val < 97:
+            diff = 97 - ascii_val
+            ascii_val = 123 - diff
+        
+        decrypted.append(chr(ascii_val))
+
+    return "".join(decrypted)
 
 while True:
     line = sys.stdin.readline().rstrip()
@@ -14,9 +41,14 @@ while True:
 
     if cmd == "PASSKEY":
         # set current passkey to arg
-        curr_pass = arg
+        passkey = arg
+        # write success response to stdout
+        sys.stdout.write("RESULT ")
+    elif not passkey:
+        sys.stdout.write("ERROR: A passkey must be set before encrypting/decrypting")
     elif cmd == "ENCRYPT":
         pass
     elif cmd == "DECRYPT":
         pass
+    
 
