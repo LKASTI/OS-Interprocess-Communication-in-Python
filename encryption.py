@@ -5,11 +5,10 @@ line = ""
 passkey = ""
 
 
-# TODO: what if the the word to enc/dec is longer than the passkey?
 def encrypt(word):
     encrypted = []
     for i in range(0, len(word)):
-        ascii_val = ord(word[i].lower()) + (ord(passkey[i].lower()) - ord('a'))
+        ascii_val = ord(word[i].lower()) + (ord(passkey[i % len(passkey)].lower()) - ord('a'))
 
         if ascii_val > 122:
             diff = ascii_val - 122
@@ -26,7 +25,7 @@ def encrypt(word):
 def decrypt(word):
     decrypted = []
     for i in range(0, len(word)):
-        ascii_val = ord(word[i].lower()) - (ord(passkey[i].lower()) - ord('a'))
+        ascii_val = ord(word[i].lower()) - (ord(passkey[i % len(passkey)].lower()) - ord('a'))
 
         if ascii_val < 97:
             diff = 97 - ascii_val
