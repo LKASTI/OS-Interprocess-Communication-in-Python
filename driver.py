@@ -27,7 +27,9 @@ while True:
     if line.find(' ') == -1:
         if line == "quit":
             logger.stdin.write("STOPPED Logging Stopped\n")
-            encrypter.stdin.write("QUIT")
+            encrypter.stdin.write("QUIT\n")
+            logger.stdin.flush()
+            encrypter.stdin.flush()
             logger.wait()
             encrypter.wait()
             sys.exit(0)
@@ -45,24 +47,36 @@ while True:
 
             # set current password to argument
             current_pass = arg
+
             logger.stdin.write(f"SET_PASSWORD {arg}\n")
             logger.stdin.flush()
+
+            encrypter.stdin.write(f"PASSKEY {arg}\n")
+            encrypter.stdin.flush()
+            enc_response = encrypter.stdout.readline().rstrip()
+
+            print(enc_response)
+
             logger.stdin.write("SET_PASSWORD SUCCESS\n")
         elif cmd == "encrypt":
             # TODO: provide user option of using a string in history or entering a new string
 
             logger.stdin.write(f"ENCRYPT {arg}\n")
             logger.stdin.flush()
-            # TODO: save the string that will be encrypted into history
+            # TODO: save the string that will be encrypted into history 
 
-            # password must be set first
-            if not current_pass:
-                logger.stdin.write("ENCRYPT ERROR: Passkey not set\n")
-                sys.stdout.write(password_error)
+            encrypter.stdin.write(f"ENCRYPT {arg}\n")
+            encrypter.stdin.flush()
+
+            enc_response = encrypter.stdout.readline().rstrip()
+
+            if "ERROR" in enc_response:
+                logger.stdin.write(f"ENCRYPT {enc_response}\n")
+                print(enc_response)
             else:
-                # TODO: retrieve encrypted word by using encryption process
-                encrypted_word = ""
-                logger.stdin.write(f"ENCRYPT SUCCESS: {encrypted_word}\n")
+                logger.stdin.write(f"ENCRYPT SUCCESS: {enc_response[enc_response.index(' ') + 1:]}\n")
+                print(enc_response)
+
         elif cmd == "decrypt":
             # TODO: provide user option of using a string in history or entering a new string
 
@@ -70,20 +84,23 @@ while True:
             logger.stdin.flush()
             # TODO: save the string that will be encrypted into history
 
-            # password must be set first
-            if not current_pass:
-                logger.stdin.write("DECRYPT ERROR: Passkey not set\n")
-                sys.stdout.write(password_error)
+            encrypter.stdin.write(f"DECRYPT {arg}\n")
+            encrypter.stdin.flush()
+
+            enc_response = encrypter.stdout.readline().rstrip()
+
+            if "ERROR" in enc_response:
+                logger.stdin.write(f"DECRYPT {enc_response}\n")
+                print(enc_response)
             else:
-                # TODO: retrieve decrypted word by using encryption process
-                decrypted_word = ""
-                logger.stdin.write(f"DECRYPT SUCCESS: {decrypted_word}\n")
-                # TODO: save the string that will be decrypted into history
+                logger.stdin.write(f"DECRYPT SUCCESS: {enc_response[enc_response.index(' ') + 1:]}\n")
+                print(enc_response)
         else:
             sys.stdout.write("Please enter one of the listed commands.")    
 
     sys.stdout.write("\n")
     logger.stdin.flush()
+    
 
 
 

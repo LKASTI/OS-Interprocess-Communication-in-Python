@@ -20,7 +20,7 @@ while True:
     message = line[line.index(' ') + 1:]
 
     log_file.write(format_action_message(action, message))
-    
+
     if action == "STOPPED":
         log_file.close()
         sys.exit(0)
