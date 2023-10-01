@@ -65,7 +65,7 @@ while True:
 
         sys.stdout.write(f"RESULT {dec_string}\n")
     else:
-        sys.stdout.write("Please enter a valid command\n")
+        sys.stdout.write("ERROR: Please enter a valid command\n")
 
     sys.stdout.flush()
 
